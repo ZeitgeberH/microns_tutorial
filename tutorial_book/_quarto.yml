@@ -29,6 +29,7 @@ website:
   sidebar:
     style: "docked"
     search: true
+    collapse-level: 1
     contents:
       - background.ipynb
       - dataset-basics.ipynb
@@ -37,11 +38,6 @@ website:
           - proofreading.ipynb
           - materialization-version.ipynb
           - proofreading-status.ipynb
-      - section: "Virtual Observatory of the Cortex (VORTEX)"
-        href: vortex-overview.ipynb
-        contents:
-          - vortex-year-1.ipynb
-          - vortex-year-2.ipynb
       - section: "Online Tools"
         contents:
           - neuroglancer-basic.ipynb
@@ -79,6 +75,12 @@ website:
           - annotation-tables.ipynb
           - functional-data.ipynb
           - static-repositories.ipynb
+      - section: "Virtual Observatory of the Cortex (VORTEX)"
+        href: vortex-overview.ipynb
+        contents:
+          - vortex-year-1.ipynb
+          - vortex-year-2.ipynb
+          - vortex-year-3.ipynb
   open-graph: true
   back-to-top-navigation: true
   page-footer: 
