@@ -42,6 +42,7 @@ website:
         contents:
           - vortex-year-1.ipynb
           - vortex-year-2.ipynb
+          - vortex-year-3.ipynb
       - section: "Online Tools"
         contents:
           - neuroglancer-basic.ipynb
