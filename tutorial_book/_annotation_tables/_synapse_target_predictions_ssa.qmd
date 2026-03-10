@@ -4,6 +4,8 @@ This table contains synapse target structure predictions ('soma', 'shaft', 'spin
 
 The model is a random forest trained on spectral shape analysis features from the mesh. Current failure modes include some stubby spines being predicted as shafts, and some very thin dendrites being classified as spines. 
 
+Citation: https://www.biorxiv.org/content/10.64898/2026.02.19.706834
+
 It contains the following columns:
 
 | Column | Description |
@@ -16,14 +18,8 @@ It contains the following columns:
 
 : Synapse target predictions column definitions {.light .hover}
 
-:::{.callout-tip}
-This is a reference table on `synapses_pni_2`, and can be indexed by the same synapse id. 
+::: {.callout-warning}
+## Deprecated table
+
+This table is deprecated, use `synapse_target_predictions_ssa_v2` instead. 
 :::
-
-```python
-# Standard query
-client.materialize.query_table('synapse_target_predictions_ssa', limit=10)
-
-# Content-aware query
-client.materialize.tables.synapse_target_predictions_ssa(post_pt_root_id=example_root_id).query()
-```
