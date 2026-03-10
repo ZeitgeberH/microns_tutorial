@@ -1,6 +1,8 @@
-Table name: `multi_input_spine_predictions_ssa`
+Table name: `synapse_spine_mapping_v2`
 
-Spine-predicted objects with more than one input synapse prediction. Based on the same model used in `synapse_target_predictions_ssa`. The model is a random forest trained on spectral shape analysis features from the mesh. Current failure modes include some stubby spines being predicted as shafts, and some very thin dendrites being classified as spines. 
+This table contains a mapping between synapses and the ID of the spine that they target. The spine predictions came from the model used to generate the table `synapse_target_predictions_ssa_v2`. The model is a random forest trained on spectral shape analysis features from the mesh. More information about the targeted spines will be added in a future release. 
+
+From this table you can query spine-predicted objects with more than one input synapse prediction. This makes it a full replacement for `multi_input_spine_predictions_ssa'.
 
 Citation: https://www.biorxiv.org/content/10.64898/2026.02.19.706834
 
@@ -12,7 +14,7 @@ It contains the following columns:
 | `post_pt_position` / `post_pt_supervoxel_id` / `post_pt_root_id` | The bound spatial point data for the postsynaptic side of the synapse. |  
 | `size` | The size of the synapse in voxels. This correlates well, but not perfectly, with the surface area of synapse. |  
 | `ctr_pt_position` | A position in the center of the detected synaptic junction. Of all points in the synapse table, this is usually the closest point to the surface (and thus mesh) of both neurons. Because it is at the edge of cells, it is not associated with a root id. |
-| `group_id` | a unique iterator for shared postsynaptic compartments. Use `pandas.groupby()` to associate synapses on the same target |
+| `tag` | label of the post-synaptic structure, one of: `spine`, `shaft`, `soma` |
 
 : Synapse target predictions column definitions {.light .hover}
 
@@ -20,8 +22,11 @@ It contains the following columns:
 This is a reference table on `synapses_pni_2`, and can be indexed by the same synapse id. 
 :::
 
-::: {.callout-warning}
-## Deprecated table
 
-This table is deprecated, use `synapse_target_predictions_ssa_v2` instead. 
-:::
+```python
+# Standard query
+client.materialize.query_table('synapse_spine_mapping_v2', limit=10)
+
+# Content-aware query
+client.materialize.tables.synapse_spine_mapping_v2(post_pt_root_id=example_root_id).query().value_counts('group_id')
+```

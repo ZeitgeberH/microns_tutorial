@@ -1,0 +1,64 @@
+Table name: `cell_type_multifeature_combo`
+
+This table contains the results of a hierarchical classifier trained on a combo of dendritic, somatic, and spine features. Full features are used for cells with soma 50 microns from border, labels are propagated to other cells via 20-nearest neighbor in a reduced feature space of properties that had little median variation between cells close and far from dataset edges. 
+
+Excitatory subclasses are based on layer and projection class. Excitatory classes might not be physically within the layer in cases where clustering strongly associates cells with a different laminar population. Fine specification, as was in `aibs_metamodel_mtypes_v661_v2` is forthcoming.
+
+Inhibitory subclasses are inferred from characteristic proofread exemplars. This expands on the inhibitory classifications in `aibs_metamodel_mtypes_v661_v2`, combined from morphological characteristics.
+
+Contact Casey Schneider-Mizell for use or questions
+
+The key columns are:
+
+| Column | Description |
+| :--- | :--- |
+| `id` | Soma ID for the cell |
+| `pt_position` \ `pt_supervoxel_id` \ `pt_root_id` | Bound spatial point columns associated with the centroid of the cell nucleus |
+| `classification-system`| One of `excitatory_neuron` or `inhibitory_neuron` for detected neurons, or `nonneuron` for non-neurons (glia/pericytes). |
+| `cell_type` | One of several cell types, detailed below |
+
+: Multifeature-Combo Table {.light .hover}
+
+:::{.callout-tip}
+This is a reference table on `nucleus_detection_v0`, and can be indexed by the same nucleus id. 
+:::
+
+The cell types in the table are:
+
+::: {.callout-note appearance="minimal" collapse=true}
+
+### Multifeature Meso Types definitions
+
+| Cell Type | Subclass | Description |
+| :--- | :--- | :--- |
+| `L2IT` | Excitatory | Layer 2 (upper layer 2/3) excitatory neurons that have local,  **i**ntra**t**elencephalic axon | 
+| `L3IT` | Excitatory | Layer 3 (lower layer 2/3) excitatory neurons that have local,  **i**ntra**t**elencephalic axon | 
+| `L4IT` | Excitatory | Layer 4 excitatory neurons that have local,  **i**ntra**t**elencephalic axon | 
+| `L5IT` | Excitatory | Layer 5 **i**ntra**t**elencephalic cells | 
+| `L5ET` | Excitatory | Layer 5 **e**xtra**t**elencephalic cells, with large somas and thick descending axon | 
+| `L5NP` | Excitatory | Layer 5 near-projecting cells, with sparse inputs and outputs | 
+| `L6CT` | Excitatory | Layer 6 **i**ntra**t**elencephalic cells | 
+| `L6IT` | Excitatory | Layer 6 **c**ortico**t**halamic cells | 
+| `MC` | Inhibitory | Martinotti cells with layer 1 arbors | 
+| `NMC` | Inhibitory | Non-martinotti cells with dense arbors and dendrite targeting | 
+| `DTC` | Inhibitory | Dendrite targeting cells that cluster with MCs and NMCs but are not dense like NMCs. Mostly layer 6 |
+| `ChC` | Inhibitory | Chandelier cells |
+| `PV` | Inhibitory | Morpholgical cluster containing proofread cells that are clearly parvalubmin positive non ChCs. Almost entirely basket cells. |
+| `ITC` | Inhibitory | Inhibitory targeting cells with a typical preference toward putative SST subclasses |
+| `AltBasket` | Inhibitory | AltBasket-Basket cells that cluster with VIP/Sncg cells rather than PV cells |
+| `AltDTC` | Inhibitory | Dendrite targeting cells that cluster away from the clear putative SST cells |
+| `ITCperi` | Inhibitory | Inhibitory targeting cells that mostly target basket cells, not putative SSTs |
+| `L1` |  Inhibitory | Various layer 1 cells, mostly not Neurogliaform |
+| `NGC` |  Inhibitory | Neurogliaform cells across all layers. |
+
+: Multifeature-Combo: Cell Type definitions {.light .hover}
+
+::: 
+
+```python
+# Standard query
+client.materialize.query_table('cell_type_multifeature_combo')
+
+# Content-aware query
+client.materialize.tables.cell_type_multifeature_combo(id=example_nucleus_id).query()
+```
